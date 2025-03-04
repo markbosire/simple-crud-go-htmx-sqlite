@@ -14,7 +14,7 @@ pipeline {
                 label 'agent'
             }
             steps {
-                sh 'go test'
+                sh '/usr/local/go/bin/go test'
             }
         }
 
