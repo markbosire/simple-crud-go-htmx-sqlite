@@ -76,6 +76,9 @@ func TestCreateTask(t *testing.T) {
 	} else {
 		t.Error("No task found after creation")
 	}
+
+	// Success message
+	println("✅ TestCreateTask: Task creation test passed successfully!")
 }
 
 func TestGetTasks(t *testing.T) {
@@ -109,6 +112,9 @@ func TestGetTasks(t *testing.T) {
 	if tasks[1].Title != "Task 2" || tasks[1].Description != "Description 2" {
 		t.Errorf("Second task details incorrect: %+v", tasks[1])
 	}
+
+	// Success message
+	println("✅ TestGetTasks: Task retrieval test passed successfully!")
 }
 
 func TestUpdateTaskStatus(t *testing.T) {
@@ -147,6 +153,9 @@ func TestUpdateTaskStatus(t *testing.T) {
 	} else {
 		t.Error("No task found after status update")
 	}
+
+	// Success message
+	println("✅ TestUpdateTaskStatus: Task status update test passed successfully!")
 }
 
 func TestDeleteTask(t *testing.T) {
@@ -183,4 +192,7 @@ func TestDeleteTask(t *testing.T) {
 			t.Errorf("Expected 0 tasks after deletion, got %d", count)
 		}
 	}
+
+	// Success message
+	println("✅ TestDeleteTask: Task deletion test passed successfully!")
 }

@@ -83,6 +83,9 @@ func TestHandleTaskCreate(t *testing.T) {
 	if tasks[0].Title != "Test Task" || tasks[0].Description != "Test Description" {
 		t.Errorf("Task details incorrect: %+v", tasks[0])
 	}
+
+	// Success message
+	println("✅ TestHandleTaskCreate: Task creation handler test passed successfully!")
 }
 
 func TestHandleTaskToggle(t *testing.T) {
@@ -143,6 +146,9 @@ func TestHandleTaskToggle(t *testing.T) {
 	if tasks[0].Status != "pending" {
 		t.Errorf("Expected status 'pending', got %s", tasks[0].Status)
 	}
+
+	// Success message
+	println("✅ TestHandleTaskToggle: Task toggle handler test passed successfully!")
 }
 
 func TestHandleTaskDelete(t *testing.T) {
@@ -184,4 +190,7 @@ func TestHandleTaskDelete(t *testing.T) {
 	if len(tasks) != 0 {
 		t.Errorf("Expected 0 tasks, got %d", len(tasks))
 	}
+
+	// Success message
+	println("✅ TestHandleTaskDelete: Task delete handler test passed successfully!")
 }
