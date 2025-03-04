@@ -29,6 +29,34 @@ pipeline {
                 }
             }
         }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Log in to Docker Hub
+                    withCredentials([usernamePassword(credentialsId: "${env.DOCKER_HUB_CREDENTIALS}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh """
+                            docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+                        """
+                    }
+
+                    // Tag the image with latest and build number
+                    sh """
+                        docker tag ${env.DOCKER_HUB_USERNAME}/${env.DOCKER_IMAGE_NAME}:${env.BUILD_ID} ${env.DOCKER_HUB_USERNAME}/${env.DOCKER_IMAGE_NAME}:latest
+                    """
+
+                    // Push both tagged versions
+                    sh """
+                        docker push ${env.DOCKER_HUB_USERNAME}/${env.DOCKER_IMAGE_NAME}:${env.BUILD_ID}
+                        docker push ${env.DOCKER_HUB_USERNAME}/${env.DOCKER_IMAGE_NAME}:latest
+                    """
+
+                    // Optional: Clean up local images to save space
+                    sh """
+                        docker image prune -f
+                    """
+                }
+            }
+        }
 
        stage('Run Docker Container') {
             steps {
