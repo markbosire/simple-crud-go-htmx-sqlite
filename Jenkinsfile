@@ -5,7 +5,7 @@ pipeline {
         // Define environment variables for Docker image name and credentials
         DOCKER_IMAGE_NAME = "gotaskmanager"
         DOCKER_HUB_USERNAME = "markbosire" // Replace with your Docker Hub username
-        DOCKER_HUB_CREDENTIALS = "docker-hub-credentials" // Replace with your Jenkins credentials ID
+        DOCKER_HUB_CREDENTIALS = "dockerhub-credentials" // Replace with your Jenkins credentials ID
     }
 
     stages {
