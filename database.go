@@ -3,6 +3,8 @@ package main
 import (
 	"database/sql"
 	"log"
+	"os"
+	"path/filepath"
 
 	_ "modernc.org/sqlite"
 )
@@ -15,7 +17,19 @@ type Task struct {
 }
 
 func initDatabase() *sql.DB {
-	db, err := sql.Open("sqlite", "./tasks.db")
+	// Use environment variable or default to a path in the /app/data directory
+	dbPath := os.Getenv("DATABASE_PATH")
+	if dbPath == "" {
+		dbPath = "/app/data/tasks.db"
+	}
+
+	// Ensure the directory exists
+	err := os.MkdirAll(filepath.Dir(dbPath), 0755)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	db, err := sql.Open("sqlite", dbPath)
 	if err != nil {
 		log.Fatal(err)
 	}
