@@ -30,6 +30,9 @@ pipeline {
             }
         }
         stage('Push Docker Image') {
+             agent {
+                label 'agent'
+            }
             steps {
                 script {
                     // Log in to Docker Hub
