@@ -69,16 +69,10 @@ pipeline {
                         docker volume create ${env.DOCKER_IMAGE_NAME}-data || true
                     """
 
-                    // Stop and remove any running or stopped containers with the same name
-                    sh '''
-                        for container in $(docker ps -q --filter "name=${env.DOCKER_IMAGE_NAME}"); do
-                            docker stop "$container"
-                        done
-
-                        for container in $(docker ps -a -q --filter "name=${env.DOCKER_IMAGE_NAME}"); do
-                            docker rm "$container"
-                        done
-                    '''
+                    // Force remove the container if it exists, using -f to ignore errors if the container doesn't exist
+                    sh """
+                        docker rm -f ${env.DOCKER_IMAGE_NAME} || true
+                    """
 
                     // Pull the latest image from the Docker repository
                     sh "docker pull ${env.DOCKER_HUB_USERNAME}/${env.DOCKER_IMAGE_NAME}:${env.BUILD_ID}"
