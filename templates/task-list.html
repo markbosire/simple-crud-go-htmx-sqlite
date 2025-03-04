@@ -1,0 +1,69 @@
+[file name]: task-list.html
+{{define "content"}}
+<div class="max-w-3xl mx-auto">
+    <div class="flex justify-between items-center mb-8 bg-white p-4 rounded-xl shadow-md">
+        <div class="flex items-center">
+            <i class='bx bx-task text-4xl text-blue-500 mr-3'></i>
+            <h1 class="text-3xl font-bold text-gray-800">Task Manager</h1>
+        </div>
+        <a href="/create" 
+           class="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white py-2 px-5 rounded-full flex items-center shadow-md hover:shadow-lg transition-all">
+            <i class='bx bx-plus text-2xl mr-2'></i> Add Task
+        </a>
+    </div>
+
+    <div class="bg-white shadow-xl rounded-xl overflow-hidden">
+        {{if .}}
+            {{range .}}
+            <div class="p-5 border-b last:border-b-0 flex items-center justify-between hover:bg-gray-50 transition-colors group">
+                <div class="flex items-center flex-1">
+                    <form hx-post="/toggle?id={{.ID}}" hx-target="body" hx-swap="outerHTML" class="mr-4">
+                        <button type="submit" class="
+                            {{if eq .Status "completed"}}
+                                text-green-500 hover:text-green-600
+                            {{else}}
+                                text-gray-300 hover:text-blue-500
+                            {{end}} transition-colors
+                        ">
+                            <i class='bx {{if eq .Status "completed"}}bxs-check-circle{{else}}bx-circle{{end}} text-3xl'></i>
+                        </button>
+                    </form>
+                    
+                    <div class="flex-1">
+                        <h3 class="
+                            text-lg font-semibold flex items-center
+                            {{if eq .Status "completed"}}
+                                line-through text-gray-400
+                            {{else}}
+                                text-gray-700
+                            {{end}}
+                        ">
+                            <i class='bx bx-chevron-right mr-2 text-blue-300'></i>
+                            {{.Title}}
+                        </h3>
+                        {{if .Description}}
+                        <p class="text-gray-500 text-sm mt-1 flex items-center">
+                            <i class='bx bx-note mr-2 text-purple-300'></i>
+                            {{.Description}}
+                        </p>
+                        {{end}}
+                    </div>
+                </div>
+
+                <form hx-delete="/delete?id={{.ID}}" hx-target="body" hx-swap="outerHTML">
+                    <button type="submit" class="text-red-300 hover:text-red-500 transform hover:scale-110 transition-all">
+                        <i class='bx bx-trash text-2xl'></i>
+                    </button>
+                </form>
+            </div>
+            {{end}}
+        {{else}}
+            <div class="p-8 text-center text-gray-400 flex flex-col items-center">
+                <i class='bx bx-cloud-rain text-6xl mb-4 text-blue-200'></i>
+                <p class="text-xl">No tasks found!</p>
+                <p class="text-sm mt-2">Click the button above to add your first task</p>
+            </div>
+        {{end}}
+    </div>
+</div>
+{{end}}
