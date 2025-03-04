@@ -1,35 +1,48 @@
-# Start from the official Golang image
+# Start from the official Go image
 FROM golang:1.21-alpine AS builder
 
-# Set the working directory inside the container
+# Install build dependencies
+RUN apk add --no-cache gcc musl-dev
+
+# Set working directory
 WORKDIR /app
 
-# Copy the Go module files
+# Copy go mod and sum files
 COPY go.mod go.sum ./
 
 # Download dependencies
-RUN go mod tidy
+RUN go mod download
 
-# Copy the source code
+# Copy the entire project
 COPY . .
 
 # Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build -o taskmanager .
+RUN CGO_ENABLED=1 GOOS=linux go build -o task-manager
 
-# Start from a minimal Alpine image for the final stage
+# Final stage
 FROM alpine:latest
 
-# Set the working directory
-WORKDIR /root/
+# Install sqlite runtime dependencies
+RUN apk add --no-cache sqlite
 
-# Copy the binary from the builder stage
-COPY --from=builder /app/taskmanager .
+# Set working directory
+WORKDIR /app
 
-# Copy static files
-COPY ./static ./static
+# Create data directory
+RUN mkdir -p /app/data
 
-# Expose the application port
+# Copy the built binary
+COPY --from=builder /app/task-manager .
+
+# Copy templates and static files
+COPY --from=builder /app/templates ./templates
+COPY --from=builder /app/static ./static
+
+# Expose port
 EXPOSE 8080
 
-# Command to run the application
-CMD ["./taskmanager"]
+# Set default database path inside the container
+ENV DATABASE_PATH=/app/data/tasks.db
+
+# Command to run the executable
+CMD ["./task-manager"]
