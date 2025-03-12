@@ -10,6 +10,9 @@ pipeline {
 
     stages {
         stage('Dependency Check') {
+            agent {
+                label 'agent'
+            }
             steps {
                 dependencyCheck additionalArguments: '--scan . --noupdate', odcInstallation: 'dp-check'
             }
