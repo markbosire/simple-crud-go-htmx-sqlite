@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Dependency Check') {
             steps {
-                dependencyCheck additionalArguments: '--scan .', odcInstallation: 'dp-check'
+                dependencyCheck additionalArguments: '--scan . --noupdate', odcInstallation: 'dp-check'
             }
         }
         stage('Test') {
