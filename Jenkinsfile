@@ -9,6 +9,11 @@ pipeline {
     }
 
     stages {
+        stage('Dependency Check') {
+            steps {
+                dependencyCheck additionalArguments: '--scan .'
+            }
+        }
         stage('Test') {
             agent {
                 label 'agent'
