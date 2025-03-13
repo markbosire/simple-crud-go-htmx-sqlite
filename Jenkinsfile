@@ -25,7 +25,7 @@ pipeline {
                 scannerHome = tool 'go-task-manager';
             }
             steps {
-              withSonarQubeEnv(credentialsId: 'token', installationName: 'go task manager') {
+              withSonarQubeEnv(credentialsId: 'token', installationName: 'sonarqube') {
                 sh "${scannerHome}/bin/sonar-scanner"
               }
             } }
