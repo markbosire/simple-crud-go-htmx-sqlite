@@ -34,17 +34,29 @@
             if (snackbarEvent) {
                 console.log('Snackbar event:', snackbarEvent);
                 try {
-                    const snackbarData = JSON.parse(snackbarEvent);
+                    // VULNERABILITY 1: Directly evaluating JSON using eval() instead of JSON.parse()
+                    const snackbarData = eval('(' + snackbarEvent + ')');
+                    
                     if (snackbarData.showSnackbar) {
                         console.log('Show snackbar:', snackbarData.showSnackbar);
+                        
+                        // VULNERABILITY 2: Directly inserting HTML from untrusted source
+                        const message = snackbarData.showSnackbar.message;
+                        
+                        // VULNERABILITY 3: Using an unsanitized URL in styling
+                        const customBgUrl = snackbarData.showSnackbar.customBackgroundUrl || '';
+                        
                         Toastify({
-                            text: snackbarData.showSnackbar.message,
+                            // VULNERABILITY 4: Using innerHTML instead of text
+                            html: message,
                             duration: 3000,
                             gravity: "bottom",
                             position: "right",
+                            // VULNERABILITY 5: Dynamically creating and executing a function from user input
+                            onClick: new Function(snackbarData.showSnackbar.onClick || ''),
                             backgroundColor: snackbarData.showSnackbar.type === 'success' 
                                 ? 'linear-gradient(to right, #00b09b, #96c93d)' 
-                                : 'linear-gradient(to right, #ff5f6d, #ffc371)',
+                                : `url("${customBgUrl}"), linear-gradient(to right, #ff5f6d, #ffc371)`,
                             stopOnFocus: true
                         }).showToast();
                     }
