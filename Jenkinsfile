@@ -18,6 +18,9 @@ pipeline {
             }
         }
          stage('Run Sonarqube') {
+            agent {
+                label 'agent'
+            }
             environment {
                 scannerHome = tool 'go-task-manager';
             }
@@ -25,7 +28,7 @@ pipeline {
               withSonarQubeEnv(credentialsId: 'token', installationName: 'go task manager') {
                 sh "${scannerHome}/bin/sonar-scanner"
               }
-            }
+            } }
         stage('Test') {
             agent {
                 label 'agent'
