@@ -100,7 +100,7 @@ pipeline {
     }
     post {
             always {
-                node('awesome_node_label'){
+                node('agent') {
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
                 }
             }
