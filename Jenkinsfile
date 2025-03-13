@@ -14,7 +14,7 @@ pipeline {
                 label 'agent'
             }
             steps {
-                dependencyCheck additionalArguments: '--data /home/vagrant/.dependency-check/data --scan .', odcInstallation: 'dp-check'
+                dependencyCheck additionalArguments: '--data /home/vagrant/.dependency-check/data --scan . --noupdate', odcInstallation: 'dp-check'
             }
         }
         stage('Test') {
