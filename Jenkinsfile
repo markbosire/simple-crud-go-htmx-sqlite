@@ -99,11 +99,10 @@ pipeline {
         
     }
     post {
-            agent {
-                label 'agent'
-            }
             always {
+                node('awesome_node_label'){
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                }
             }
         }
 }
