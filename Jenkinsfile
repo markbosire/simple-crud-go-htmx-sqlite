@@ -6,7 +6,6 @@ pipeline {
         DOCKER_IMAGE_NAME = "gotaskmanager"
         DOCKER_HUB_USERNAME = "markbosire" // Replace with your Docker Hub username
         DOCKER_HUB_CREDENTIALS = "dockerhub-credentials" // Replace with your Jenkins credentials ID
-        NVD_API_KEY = credentials('a5e01d34-556e-4ba2-a3c3-f233ed36af80')
     }
 
     stages {
@@ -15,7 +14,7 @@ pipeline {
                 label 'agent'
             }
             steps {
-                dependencyCheck additionalArguments: '--scan . --nvdApiKey ${NVD_API_KEY}', odcInstallation: 'dp-check'
+                dependencyCheck additionalArguments: '--scan . --nvdApiKey a5e01d34-556e-4ba2-a3c3-f233ed36af80', odcInstallation: 'dp-check'
             }
         }
         stage('Test') {
