@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -81,10 +82,9 @@ func getTasks(db *sql.DB) ([]Task, error) {
 }
 
 func updateTaskStatus(db *sql.DB, id int, status string) error {
-	_, err := db.Exec(
-		"UPDATE tasks SET status = ? WHERE id = ?",
-		status, id,
-	)
+	// VULNERABLE: Direct string concatenation creates SQL injection risk
+	query := "UPDATE tasks SET status = '" + status + "' WHERE id = " + fmt.Sprintf("%d", id)
+	_, err := db.Exec(query)
 	return err
 }
 
