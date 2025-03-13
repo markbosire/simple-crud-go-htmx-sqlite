@@ -10,8 +10,11 @@ pipeline {
 
     stages {
         stage('Dependency Check') {
+            agent {
+                label 'agent'
+            }
             steps {
-                dependencyCheck additionalArguments: '--scan . --nvdApiKey a5e01d34-556e-4ba2-a3c3-f233ed36af80', odcInstallation: 'dp-check'
+                dependencyCheck additionalArguments: '--scan .', odcInstallation: 'dp-check'
             }
         }
         stage('Test') {
@@ -97,9 +100,9 @@ pipeline {
     }
     post {
             always {
-               
+                node('agent') {
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-                
+                }
             }
         }
 }
