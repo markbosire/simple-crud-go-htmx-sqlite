@@ -96,7 +96,9 @@ pipeline {
                 }
             }
         }
-        post {
+        
+    }
+    post {
             agent {
                 label 'agent'
             }
@@ -104,5 +106,4 @@ pipeline {
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
-    }
 }
