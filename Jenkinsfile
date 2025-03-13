@@ -96,5 +96,13 @@ pipeline {
                 }
             }
         }
+        post {
+            agent {
+                label 'agent'
+            }
+            always {
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
     }
 }
