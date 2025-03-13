@@ -17,6 +17,15 @@ pipeline {
                 dependencyCheck additionalArguments: '--scan . --noupdate', odcInstallation: 'dp-check'
             }
         }
+         stage('Run Sonarqube') {
+            environment {
+                scannerHome = tool 'go-task-manager';
+            }
+            steps {
+              withSonarQubeEnv(credentialsId: 'token', installationName: 'go task manager') {
+                sh "${scannerHome}/bin/sonar-scanner"
+              }
+            }
         stage('Test') {
             agent {
                 label 'agent'
